@@ -24,8 +24,6 @@ services:
       dockerfile: Dockerfile
     env_file:
       - .env
-    ports:
-      - '8080:8080'
     healthcheck:
       test: curl --fail http://localhost:8080/is-alive || exit 1
       interval: 30s
@@ -34,3 +32,13 @@ services:
     depends_on:
       db:
         condition: service_healthy
+  nginx:
+    image: nginx
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./certs:/etc/nginx/certs
+    depends_on:
+      - go-app
