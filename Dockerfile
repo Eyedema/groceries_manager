@@ -13,10 +13,15 @@ RUN go mod download
 COPY . .
 
 # Build the Go application
-RUN CGO_ENABLED=0 GOOS=linux go build -a -o app .
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags '-w -s' -a -o app .
 
+# Stage 2: Create a minimal production image
+FROM alpine:latest
+
+WORKDIR /app
+
+COPY --from=builder /app/app .
 
 EXPOSE 8080
 
-# Run the Go application
 CMD ["./app"]
