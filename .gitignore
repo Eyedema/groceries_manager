@@ -1,3 +1,5 @@
 .env
 pgdata
 certs
+certbot
+etc-letsencrypt
