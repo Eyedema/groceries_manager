@@ -25,7 +25,7 @@ services:
     env_file:
       - .env
     healthcheck:
-      test: curl --fail http://localhost:8080/is-alive || exit 1
+      test: curl --fail http://localhost:${EXTPORT}/is-alive || exit 1
       interval: 30s
       timeout: 10s
       retries: 5
@@ -36,9 +36,7 @@ services:
     image: nginx
     ports:
       - '80:80'
-      - '443:443'
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./certs:/etc/nginx/certs
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
       - go-app
